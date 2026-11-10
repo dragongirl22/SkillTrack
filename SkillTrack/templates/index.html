@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkillTrack · Campaign dashboard</title>
+<style>
+:root{--ink:#142b43;--muted:#66788b;--line:#e4ebf2;--blue:#176b87;--teal:#20a6a0;--bg:#f3f7fb;--white:#fff;--green:#16794b;--amber:#986400;--red:#a33b42}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1240px;margin:34px auto;padding:0 24px}.hero{position:relative;overflow:hidden;padding:34px 38px;border-radius:24px;background:linear-gradient(120deg,#102b46 0%,#126b83 62%,#21a69d 100%);color:#fff;box-shadow:0 16px 40px #153b5420}
+.hero:after{content:"";position:absolute;width:280px;height:280px;border:1px solid #ffffff30;border-radius:50%;right:7%;top:-150px;box-shadow:0 0 0 35px #ffffff0d,0 0 0 70px #ffffff09}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px;font-size:14px;color:#d7f5f3}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:#ffffff20;font-size:21px}
+.hero h1{font-size:clamp(28px,4vw,40px);line-height:1.12;margin:20px 0 9px;letter-spacing:-1px}.hero p{margin:0;color:#d8edf1;max-width:650px}.hero-tag{display:inline-flex;margin-top:20px;padding:6px 11px;border:1px solid #ffffff40;border-radius:30px;color:#e7fbfa;font-size:12px}
+.panel{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:26px;margin-top:20px;box-shadow:0 5px 18px #193d5607}
+.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:20px}.section-head h2{margin:0;font-size:21px;letter-spacing:-.35px}.eyebrow{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px}
+.upload-grid{display:grid;grid-template-columns:minmax(240px,2fr) 1fr 1fr;gap:15px}.field label{display:block;font-size:12px;font-weight:750;color:#40566b;margin:0 0 7px}
+input[type=file],input[type=number],select{width:100%;min-height:45px;padding:10px 12px;border:1px solid #d7e1e9;border-radius:11px;background:#fff;color:var(--ink);font:inherit}
+input[type=file]{padding:8px;background:#f9fbfd}input:focus,select:focus{outline:3px solid #1b8b9e20;border-color:#16859b}
+.hint{font-size:12px;color:var(--muted);margin:7px 0 0}.checkbox-line{display:flex;align-items:center;gap:9px;margin-top:16px;color:#53677a;font-size:13px}.checkbox-line input{accent-color:var(--blue)}
+.actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:21px}.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;border:0;border-radius:11px;padding:12px 18px;background:linear-gradient(110deg,#176b87,#159b9b);color:white;font-weight:750;font-size:14px;text-decoration:none;cursor:pointer;box-shadow:0 6px 14px #176b8728}.btn:hover{filter:brightness(1.05);transform:translateY(-1px)}.btn.secondary{background:#eaf3f6;color:#17627b;box-shadow:none;border:1px solid #d9e9ee}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.metric{padding:18px;border:1px solid #e7eef3;border-radius:15px;background:linear-gradient(145deg,#f8fbfd,#f1f7fa)}.metric .value{display:block;font-size:30px;font-weight:850;letter-spacing:-1px;line-height:1.15}.metric .label{display:block;color:var(--muted);font-size:12px;margin-top:7px}.metric .sub{font-size:11px;color:#8292a1;margin-top:3px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:780px;font-size:13px}th{background:#f5f8fb;color:#53677a;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.55px;font-weight:800}td,th{padding:14px 15px;border-bottom:1px solid #edf1f5;vertical-align:middle}tr:last-child td{border-bottom:0}tbody tr:hover{background:#fbfdfe}.student{font-weight:750}.profile-link{color:#087a91;font-weight:700;text-decoration:none}.profile-link:hover{text-decoration:underline}.profile-name{display:block;color:var(--muted);font-size:11px;margin-top:3px;max-width:220px;overflow-wrap:anywhere}
+.count{font-weight:800;font-variant-numeric:tabular-nums}.progress-track{height:7px;width:88px;background:#e9eff3;border-radius:99px;overflow:hidden;margin-top:5px}.progress-fill{height:100%;background:linear-gradient(90deg,#176b87,#27b3a4);border-radius:99px}
+.pill{display:inline-flex;align-items:center;padding:5px 9px;border-radius:30px;font-size:11px;font-weight:750;white-space:nowrap}.pill.complete{background:#e5f5ed;color:var(--green)}.pill.progress{background:#e8f3f8;color:#176b87}.pill.zero{background:#f1f3f5;color:#596b7b}.pill.error{background:#fff0ed;color:var(--red)}.pill.warning{background:#fff5df;color:var(--amber)}
+.flash{padding:12px 15px;border-radius:12px;margin-top:14px;font-size:13px}.flash.error{background:#fff0ed;color:#9b343b}.flash.warning{background:#fff7e7;color:#805d13}
+.note{color:var(--muted);font-size:12px}.footer{padding:18px 4px 30px;color:#7b8b99;font-size:11px;text-align:center}
+.empty{padding:25px;text-align:center;color:var(--muted);background:#f8fafc;border:1px dashed #d7e1e9;border-radius:14px}
+.insight-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.insight-card{border:1px solid var(--line);border-radius:15px;padding:18px;background:#fcfdfe}.insight-card h3{font-size:14px;margin:0 0 14px}.rate-number{font-size:32px;font-weight:850;letter-spacing:-1px}.bar-row{display:grid;grid-template-columns:110px 1fr 30px;gap:10px;align-items:center;margin:12px 0;font-size:12px;color:#53677a}.bar{height:9px;background:#edf2f5;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#176b87,#27b3a4)}.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:4px 0 16px}.podium-card{position:relative;overflow:hidden;border:1px solid #dce8ee;border-radius:15px;padding:16px 14px;background:linear-gradient(150deg,#fff,#f2f8fa);min-height:126px}.podium-card.first{background:linear-gradient(145deg,#fff9e8,#fff);border-color:#ead9a8;transform:translateY(-5px)}.podium-rank{font-size:22px;margin-bottom:8px}.podium-student{font-weight:800;font-size:13px;overflow-wrap:anywhere}.podium-count{font-size:21px;font-weight:900;color:#126b83;margin-top:7px}.podium-caption{font-size:10px;color:#8493a0;margin-top:2px}.rank-list{list-style:none;margin:0;padding:0}.rank-list li{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;border-bottom:1px solid #edf1f5;font-size:13px;background:#fbfdfe}.rank-list li:first-child{border-radius:10px 10px 0 0}.rank-list li:last-child{border-bottom:0;border-radius:0 0 10px 10px}.rank-name{font-weight:700}.rank-score{font-weight:850;color:var(--blue);white-space:nowrap}.insight-foot{font-size:11px;color:#8493a0;margin-top:10px}@media(max-width:520px){.podium{grid-template-columns:1fr}.podium-card.first{transform:none}}.insight-foot{font-size:11px;color:#8493a0;margin-top:10px}
+@media(max-width:800px){.insight-grid{grid-template-columns:1fr}}
+@media(max-width:800px){.wrap{padding:0 14px;margin:18px auto}.hero{padding:27px 23px}.panel{padding:19px}.upload-grid{grid-template-columns:1fr 1fr}.upload-grid .field:first-child{grid-column:1/-1}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.upload-grid{grid-template-columns:1fr}.upload-grid .field:first-child{grid-column:auto}.metrics{grid-template-columns:1fr 1fr}.metric{padding:14px}.metric .value{font-size:25px}.section-head{display:block}}
+</style></head>
+<body><main class="wrap">
+<header class="hero">
+  <div class="brand"><span class="logo">✦</span> LEARN WITH COMMUNITIES CAMPAIGN</div>
+  <h1>SkillTrack</h1>
+  <p>A clear view of student progress through Google Skills skill badges. Upload your campaign roster, verify public profiles and track progress toward the 10-badge goal.</p>
+  <span class="hero-tag">● &nbsp; Student progress dashboard</span>
+</header>
+
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for cat,msg in msgs %}<div class="flash {{'error' if cat=='error' else 'warning'}}">{{msg}}</div>{% endfor %}{% endwith %}
+
+<section class="panel">
+  <div class="section-head"><div><div class="eyebrow">Get started</div><h2>Upload campaign roster</h2></div></div>
+  <form method="post" enctype="multipart/form-data">
+    <div class="upload-grid">
+      <div class="field"><label for="csv_file">Student CSV file</label><input id="csv_file" type="file" name="csv_file" accept=".csv"><p class="hint">CSV with a “Google Skills Profile URL” column.</p></div>
+      <div class="field"><label for="mode">Verification mode</label><select id="mode" name="mode"><option value="live" {{'selected' if mode=='live'}}>Live verification</option><option value="demo" {{'selected' if mode=='demo'}}>Demo preview</option></select></div>
+      <div class="field"><label for="delay">Delay between profiles</label><input id="delay" type="number" name="delay" min="1" max="30" value="{{delay}}"><p class="hint">Seconds · helps avoid rate limits</p></div>
+    </div>
+    <div class="checkbox-line"><input id="use_sample" type="checkbox" name="use_sample" value="yes"><label for="use_sample">Use the included sample CSV if no file is selected</label></div>
+    <div class="actions"><button class="btn" type="submit">Run progress check <span>→</span></button><span class="note">Checks profiles sequentially. Private or unreadable profiles are marked for review.</span></div>
+    <input type="hidden" name="retries" value="{{retries}}">
+  </form>
+</section>
+
+{% if results is not none %}
+{% set done=results|selectattr('Status','equalto','Completed')|list|length %}
+{% set progress=results|selectattr('Status','equalto','In progress')|list|length %}
+{% set private=results|selectattr('Status','equalto','Private profile')|list|length %}
+{% set known=results|selectattr('Badges','ne',none)|list %}
+{% set avg=(known|sum(attribute='Badges')/known|length) if known|length else 0 %}
+{% set unknown=results|length-known|length %}
+{% set verified=known|length %}
+{% set no_badges=results|selectattr('Status','equalto','No badges yet')|list|length %}
+{% set goal_rate=(done/verified*100) if verified else 0 %}
+{% set ranked=known|selectattr('Badges','gt',0)|sort(attribute='Badges',reverse=true) %}
+<section class="panel">
+  <div class="section-head"><div><div class="eyebrow">Campaign snapshot</div><h2>Progress overview</h2></div><span class="pill progress">{{results|length}} profiles checked</span></div>
+  <div class="metrics">
+    <div class="metric"><span class="value">{{results|length}}</span><span class="label">Profiles processed</span><div class="sub">Uploaded roster</div></div>
+    <div class="metric"><span class="value">{{done}}</span><span class="label">Goal achieved</span><div class="sub">10 badges or more</div></div>
+    <div class="metric"><span class="value">{{progress}}</span><span class="label">In progress</span><div class="sub">At least one badge</div></div>
+    <div class="metric"><span class="value">{{'%.1f'|format(avg)}}/10</span><span class="label">Average known badges</span><div class="sub">{{unknown}} not verified · excluded</div></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-head"><div><div class="eyebrow">Campaign intelligence</div><h2>Campaign insights</h2></div><span class="pill progress">Based on verified profiles only</span></div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <h3>Goal achievement rate</h3>
+      <div class="rate-number">{{'%.0f'|format(goal_rate)}}%</div>
+      <p class="note">{{done}} of {{verified}} verified students have reached the 10-badge goal.</p>
+      <div class="bar" style="height:11px;margin-top:14px"><span style="width:{{goal_rate}}%"></span></div>
+      <div class="insight-foot">Private and unverifiable profiles are excluded from this calculation.</div>
+    </div>
+    <div class="insight-card">
+      <h3>Roster breakdown</h3>
+      {% set other_unverified=unknown-private %}
+      {% for label,number in [('Completed',done),('In progress',progress),('No badges yet',no_badges),('Private profiles',private),('Other unverified',other_unverified)] %}
+      <div class="bar-row"><span>{{label}}</span><div class="bar"><span style="width:{{(number/results|length*100) if results|length else 0}}%"></span></div><strong>{{number}}</strong></div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="insight-card" style="margin-top:16px">
+    <h3>Top 3 leaderboard · students who have started</h3>
+    {% if ranked %}
+      <div class="podium">
+        {% for r in ranked[:3] %}
+        <div class="podium-card {% if loop.first %}first{% endif %}">
+          <div class="podium-rank">{% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% else %}🥉{% endif %}</div>
+          <div class="podium-student">{{r.Student}}</div>
+          <div class="podium-count">{{r.Badges}}<span style="font-size:12px;font-weight:700;color:#708392"> / 10</span></div>
+          <div class="podium-caption">BADGES EARNED</div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}<div class="empty">No students have earned a badge yet. The leaderboard will appear when at least one verified student has started.</div>{% endif %}
+    <div class="insight-foot">Shows up to three students with at least one verified badge, ranked by badges earned. Students with zero badges, private profiles and unverifiable profiles are not listed.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-head"><div><div class="eyebrow">Individual breakdown</div><h2>Student results</h2></div>
+  <form method="post" action="{{url_for('download')}}"><input type="hidden" name="results_json" value='{{results|tojson|forceescape}}'><button class="btn secondary" type="submit">Export CSV ↓</button></form></div>
+  <div class="table-wrap"><table><thead><tr><th>Student</th><th>Google Skills profile</th><th>Badges</th><th>Progress</th><th>Status</th><th>Verification note</th></tr></thead><tbody>
+  {% for r in results %}<tr>
+    <td><span class="student">{{r.Student}}</span>{% if r.Email %}<span class="profile-name">{{r.Email}}</span>{% endif %}</td>
+    <td><a class="profile-link" href="{{r['Profile URL']}}" target="_blank" rel="noopener noreferrer">View profile ↗</a>{% if r['Profile name'] %}<span class="profile-name">{{r['Profile name']}}</span>{% endif %}</td>
+    <td class="count">{{r.Badges if r.Badges is not none else '—'}}{% if r.Badges is not none %}/10{% endif %}</td>
+    <td>{% if r.Badges is not none %}{{r.Progress}}<div class="progress-track"><div class="progress-fill" style="width:{{[100, (r.Badges/10*100)|round]|min}}%"></div></div>{% else %}—{% endif %}</td>
+    <td>{% set st=r.Status %}<span class="pill {% if st=='Completed' %}complete{% elif st=='In progress' %}progress{% elif st=='No badges yet' %}zero{% elif st in ['Unavailable','Rate limited','Private profile'] %}warning{% else %}error{% endif %}">{{st}}</span></td>
+    <td class="note">{{r.Details}}</td>
+  </tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endif %}
+<section class="panel"><div class="eyebrow">How to read this report</div>
+  <p class="note"><strong>Snapshot-based tracking:</strong> SkillTrack checks each public profile when you run the report. It does not monitor profiles continuously in the background, and continuous live tracking is not necessary for a campaign progress tracker. Upload the roster and run another check whenever you want an updated snapshot.</p>
+  <p class="note"><strong>Private profiles:</strong> A profile identified as private by the public page, access response, or an explicit CSV reference note is labelled “Private profile”. The verification note identifies when the CSV supplied that information. Its badge count is left blank and excluded from averages; it is never treated as zero. The student can make the profile public and you can recheck it later.</p>
+  <p class="note">Only live verification results should be used to assess campaign progress. Demo mode uses fictional sample counts. SkillTrack is an independent project and is not affiliated with Google.</p></section>
+<footer class="footer">SkillTrack · Learn With Communities Campaign · Built for transparent progress tracking</footer>
+</main></body></html>
