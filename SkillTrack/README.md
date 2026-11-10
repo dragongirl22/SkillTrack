@@ -27,14 +27,10 @@ The required column is `Google Skills Profile URL`. Optional columns include `St
 
 Google may change its profile markup or delivery behavior. Validate the live parser against the supplied reference profiles before relying on results. If Google serves profile content only after client-side JavaScript, this Requests-based parser will need a browser-rendering approach.
 
-## Deploy as a public link (Render)
+## Deployed as a public link (Render)
 
-1. Push this project to a GitHub repository.
-2. In Render, create a **New Web Service** and connect that repository.
-3. Set **Build Command** to `pip install -r requirements.txt`.
-4. Set **Start Command** to `gunicorn app:app`.
-5. Choose a Python runtime and deploy.
-6. Submit the generated `https://...onrender.com` URL. Judges can then open the app without downloading the project or running a local server.
+This file was then pushed as a repo on GitHub and then linked to web service deployment on render, the link for which is:
+https://skilltrack-bmar.onrender.com
 
 ## Notes
 
